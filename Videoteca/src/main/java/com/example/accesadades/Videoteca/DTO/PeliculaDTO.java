@@ -1,5 +1,6 @@
 package com.example.accesadades.Videoteca.DTO;
 
+
 public record PeliculaDTO(
         String id,
         String titulo,

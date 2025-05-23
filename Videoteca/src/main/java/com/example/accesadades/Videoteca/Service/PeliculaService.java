@@ -31,7 +31,7 @@ public class PeliculaService {
     }
 
     public Mono<Pelicula> update(PeliculaDTO peliculaDTO) {
-        return peliculaRepo.findById(peliculaDTO.getId())
+        return peliculaRepo.findById(peliculaDTO.id())
                 .map(existingPelicula -> {
                     Pelicula updatedPelicula = peliculaMapper.toEntity(peliculaDTO);
                     // Preservar el ID existente

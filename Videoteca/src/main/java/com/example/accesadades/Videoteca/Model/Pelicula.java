@@ -23,4 +23,10 @@ public class Pelicula implements Serializable {
     private double duracion; // duración en minutos
     private String sinopsis;
     private String idioma;
+
+    public String getId() {
+        return id;
+    }
 }
+
+

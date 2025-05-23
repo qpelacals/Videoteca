@@ -3,7 +3,7 @@ package com.example.accesadades.Videoteca.Controller;
 import com.example.accesadades.Videoteca.DTO.PeliculaDTO;
 import com.example.accesadades.Videoteca.Model.Pelicula;
 import com.example.accesadades.Videoteca.Service.PeliculaService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,32 +14,35 @@ public class PeliculaController {
 
     private final PeliculaService peliculaService;
 
+    @Autowired
     public PeliculaController(PeliculaService peliculaService) {
         this.peliculaService = peliculaService;
     }
 
-    @PostMapping("/save")
-    public Mono<Pelicula> save(@RequestBody PeliculaDTO peliculaDTO) {
+    @PostMapping
+    public Mono<Pelicula> createPelicula(@RequestBody PeliculaDTO peliculaDTO) {
         return peliculaService.save(peliculaDTO);
     }
 
     @GetMapping("/{id}")
-    public Mono<Pelicula> findById(@PathVariable String id) {
+    public Mono<Pelicula> getPeliculaById(@PathVariable String id) {
         return peliculaService.findById(id);
     }
 
-    @GetMapping("/all")
-    public Flux<Pelicula> findAll() {
+    @GetMapping
+    public Flux<Pelicula> getAllPeliculas() {
         return peliculaService.findAll();
     }
 
-    @PutMapping("/update")
-    public Mono<Pelicula> update(@RequestBody PeliculaDTO peliculaDTO) {
+    @PutMapping("/{id}")
+    public Mono<Pelicula> updatePelicula(@PathVariable String id, @RequestBody PeliculaDTO peliculaDTO) {
+        // Aseguramos que el ID del DTO coincida con el ID del path
+        peliculaDTO.setId(id);
         return peliculaService.update(peliculaDTO);
     }
 
     @DeleteMapping("/{id}")
-    public Mono<Void> delete(@PathVariable String id) {
+    public Mono<Void> deletePelicula(@PathVariable String id) {
         return peliculaService.delete(id);
     }
 }

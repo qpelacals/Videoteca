@@ -4,23 +4,22 @@ import com.example.accesadades.Videoteca.DTO.PeliculaDTO;
 import com.example.accesadades.Videoteca.Mappers.PeliculaMapper;
 import com.example.accesadades.Videoteca.Model.Pelicula;
 import com.example.accesadades.Videoteca.Repository.PeliculaRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
 public class PeliculaService {
-    private final PeliculaRepo peliculaRepo;
-    private final PeliculaMapper peliculaMapper;
 
-    public PeliculaService(PeliculaRepo peliculaRepo, PeliculaMapper peliculaMapper) {
-        this.peliculaRepo = peliculaRepo;
-        this.peliculaMapper = peliculaMapper;
-    }
+    @Autowired
+    private PeliculaRepo peliculaRepo;
+
+    @Autowired
+    private PeliculaMapper peliculaMapper;
 
     public Mono<Pelicula> save(PeliculaDTO peliculaDTO) {
-        Pelicula pelicula = peliculaMapper.toEntity(peliculaDTO);
-        return peliculaRepo.save(pelicula);
+        return peliculaRepo.save(peliculaMapper.toEntity(peliculaDTO));
     }
 
     public Mono<Pelicula> findById(String id) {
@@ -32,12 +31,21 @@ public class PeliculaService {
     }
 
     public Mono<Pelicula> update(PeliculaDTO peliculaDTO) {
-        return peliculaRepo.findById(peliculaDTO.id())
-                .map(existingPelicula -> peliculaMapper.toEntity(peliculaDTO))
+        return peliculaRepo.findById(peliculaDTO.getId())
+                .map(existingPelicula -> {
+                    Pelicula updatedPelicula = peliculaMapper.toEntity(peliculaDTO);
+                    // Preservar el ID existente
+                    updatedPelicula.setId(existingPelicula.getId());
+                    return updatedPelicula;
+                })
                 .flatMap(peliculaRepo::save);
     }
 
     public Mono<Void> delete(String id) {
         return peliculaRepo.deleteById(id);
+    }
+
+    public Flux<Pelicula> findByTituloRegex(String regex) {
+        return peliculaRepo.findByTituloRegex(regex);
     }
 }

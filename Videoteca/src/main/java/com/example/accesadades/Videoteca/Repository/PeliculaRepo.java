@@ -11,4 +11,5 @@ import reactor.core.publisher.Flux;
 public interface PeliculaRepo extends ReactiveMongoRepository<Pelicula, String> {
     Flux<Pelicula> findByGenero(String genero);
     Flux<Pelicula> findByTituloContaining(String titulo);
+    Flux<Pelicula> findByTituloRegex(String regex);
 }

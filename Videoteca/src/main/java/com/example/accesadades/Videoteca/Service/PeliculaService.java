@@ -30,15 +30,12 @@ public class PeliculaService {
         return peliculaRepo.findAll();
     }
 
-    public Mono<Pelicula> update(PeliculaDTO peliculaDTO) {
-        return peliculaRepo.findById(peliculaDTO.id())
-                .map(existingPelicula -> {
-                    Pelicula updatedPelicula = peliculaMapper.toEntity(peliculaDTO);
-                    // Preservar el ID existente
-                    updatedPelicula.setId(existingPelicula.getId());
-                    return updatedPelicula;
-                })
-                .flatMap(peliculaRepo::save);
+    public Mono<Pelicula> update(PeliculaDTO nom_dto) {
+        return this.peliculaRepo.findById(nom_dto.id())
+                .flatMap(existingPelicula -> {
+                    Pelicula updatedPelicula = peliculaMapper.toEntity(nom_dto);
+                    return this.peliculaRepo.save(updatedPelicula);
+                });
     }
 
     public Mono<Void> delete(String id) {

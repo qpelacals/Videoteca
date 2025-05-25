@@ -9,6 +9,5 @@ public record PeliculaDTO(
         int añoEstreno,
         double duracion,
         String sinopsis,
-        double calificacion,
         String idioma
 ) {}

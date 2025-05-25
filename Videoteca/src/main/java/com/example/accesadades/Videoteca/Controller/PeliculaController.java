@@ -13,10 +13,8 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/v1/peliculas")
 public class PeliculaController {
 
-    @Autowired
     private PeliculaMapper peliculaMapper;  // Inyección del mapper
 
-    @Autowired
     private PeliculaService peliculaService;
 
     @Autowired
